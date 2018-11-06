@@ -7,50 +7,6 @@
 	},
 	"item": [
 		{
-			"name": "Delete john@doe.nl before script start",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "0ca4c163-8841-4d78-9f80-6015eb1f0b3a",
-						"exec": [
-							"pm.test(\"Status code is 200 or 404\", function () {",
-							"    // User could exist or not, just want to delete the user to start clean",
-							"    pm.expect(pm.response.code).to.be.oneOf([200, 404])",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost:3000/users?email=john@doe.nl",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"users"
-					],
-					"query": [
-						{
-							"key": "email",
-							"value": "john@doe.nl"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Create new user John Doe",
 			"event": [
 				{
@@ -88,6 +44,83 @@
 			"response": []
 		},
 		{
+			"name": "Create a new token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04b57a99-6e5d-4b16-a95f-66a0c5745b7f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"    var jsonData = pm.response.json();",
+							"    pm.globals.set(\"tokenId\", jsonData.token);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\"     : \"john@doe.nl\",\n\t\"password\"  : \"secretpassword\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/tokens",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Extend the token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04b57a99-6e5d-4b16-a95f-66a0c5745b7f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"extend\"     : true,\n\t\"token\"     : \"{{tokenId}}\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/tokens",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Retrieve newly created user",
 			"event": [
 				{
@@ -109,7 +142,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenId}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
@@ -152,7 +191,13 @@
 			],
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenId}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"email\" : \"john@doe.nl\", \n\t\"firstName\" : \"Jonathan\"\n}"
@@ -183,8 +228,8 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Body contains john@doe.nl\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"john@doe.nl\");",
+							"pm.test(\"Body contains Jonathan\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Jonathan\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -193,7 +238,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenId}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
@@ -237,7 +288,13 @@
 			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenId}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
@@ -256,6 +313,60 @@
 						{
 							"key": "email",
 							"value": "john@doe.nl"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete the new token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ca4c163-8841-4d78-9f80-6015eb1f0b3a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    // Token should be deleted",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7992d72b-103d-4a32-b528-4af49fb8b7bf",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/tokens?token={{tokenId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tokens"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{tokenId}}"
 						}
 					]
 				}
