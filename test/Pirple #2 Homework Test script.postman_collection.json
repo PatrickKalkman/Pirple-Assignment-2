@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "b0d16fe1-fdee-cdb4-13fd-ac47b00376e7",
+		"name": "Pirple #2 Homework Test script",
+		"description": "Test script to test all the functions that should be implemented in the Pirple #2 Homework assignment. An API for a pizza delivery company.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Delete john@doe.nl before script start",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ca4c163-8841-4d78-9f80-6015eb1f0b3a",
+						"exec": [
+							"pm.test(\"Status code is 200 or 404\", function () {",
+							"    // User could exist or not, just want to delete the user to start clean",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404])",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/users?email=john@doe.nl",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "john@doe.nl"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new user John Doe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04b57a99-6e5d-4b16-a95f-66a0c5745b7f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\" : \"John\",\n\t\"lastName\"  : \"Doe\",\n\t\"email\"     : \"john@doe.nl\",\n\t\"password\"  : \"secretpassword\",\n\t\"tosAgreement\" : true\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve newly created user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ffc3c047-a390-45d9-b7b3-194f260ee5c5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body contains john@doe.nl\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"john@doe.nl\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/users?email=john@doe.nl",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "john@doe.nl"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update the first name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5af7a9fd-fbc0-428e-8c3b-0d403358ba08",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\" : \"john@doe.nl\", \n\t\"firstName\" : \"Jonathan\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate if the update succeeded",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ffc3c047-a390-45d9-b7b3-194f260ee5c5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body contains john@doe.nl\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"john@doe.nl\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/users?email=john@doe.nl",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "john@doe.nl"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete new user john@doe.nl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ca4c163-8841-4d78-9f80-6015eb1f0b3a",
+						"exec": [
+							"pm.test(\"Status code is 200 or 404\", function () {",
+							"    // User could exist or not, just want to delete the user to start clean",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404])",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/users?email=john@doe.nl",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "john@doe.nl"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
