@@ -25,9 +25,9 @@ Non functional requirements:
 - No npm modules can be used
 
 Stories:
-- Setup environment
-- Create an user service
-- Create an token service
+- ~~Setup environment~~
+- ~~Create an user service~~
+- ~~Create an token service~~
 - Create a menuitem service
 - Create a shopping cart service
 - Integrate with Strip.com for payments
