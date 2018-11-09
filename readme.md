@@ -28,7 +28,8 @@ Stories:
 - ~~Setup environment~~
 - ~~Create an user service~~
 - ~~Create an token service~~
-- Create a menuitem service
-- Create a shopping cart service
-- Integrate with Strip.com for payments
+- ~~Create a menuitem service~~
+- ~~Create a shopping cart service~~
+- Create an order service that integrates with stripe
+- Integrate with Stripe.com for payments
 - Integrate with mailgun for emailing receipts.
