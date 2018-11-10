@@ -133,7 +133,7 @@
 							"});",
 							"",
 							"pm.test(\"Body contains john@doe.nl\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"john@doe.nl\");",
+							"    pm.expect(pm.response.text()).to.include(\"pkalkie@gmail.com\");",
 							"});"
 						],
 						"type": "text/javascript"
