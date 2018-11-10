@@ -27,7 +27,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"firstName\" : \"John\",\n\t\"lastName\"  : \"Doe\",\n\t\"email\"     : \"john@doe.nl\",\n\t\"password\"  : \"secretpassword\",\n\t\"tosAgreement\" : true\n}"
+					"raw": "{\n\t\"firstName\" : \"John\",\n\t\"lastName\"  : \"Doe\",\n\t\"email\"     : \"pkalkie@gmail.com\",\n\t\"password\"  : \"secretpassword\",\n\t\"tosAgreement\" : true\n}"
 				},
 				"url": {
 					"raw": "http://localhost:3000/users",
@@ -67,7 +67,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"email\"     : \"john@doe.nl\",\n\t\"password\"  : \"secretpassword\"\n}"
+					"raw": "{\n\t\"email\"     : \"pkalkie@gmail.com\",\n\t\"password\"  : \"secretpassword\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:3000/tokens",
@@ -154,7 +154,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:3000/users?email=john@doe.nl",
+					"raw": "http://localhost:3000/users?email=pkalkie@gmail.com",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -166,7 +166,7 @@
 					"query": [
 						{
 							"key": "email",
-							"value": "john@doe.nl"
+							"value": "pkalkie@gmail.com"
 						}
 					]
 				}
@@ -200,7 +200,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"email\" : \"john@doe.nl\", \n\t\"firstName\" : \"Jonathan\"\n}"
+					"raw": "{\n\t\"email\" : \"pkalkie@gmail.com\", \n\t\"firstName\" : \"Jonathan\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:3000/users",
@@ -250,7 +250,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:3000/users?email=john@doe.nl",
+					"raw": "http://localhost:3000/users?email=pkalkie@gmail.com",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -262,7 +262,7 @@
 					"query": [
 						{
 							"key": "email",
-							"value": "john@doe.nl"
+							"value": "pkalkie@gmail.com"
 						}
 					]
 				}
@@ -270,16 +270,253 @@
 			"response": []
 		},
 		{
-			"name": "Delete new user john@doe.nl",
+			"name": "Get the available menu items",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "0ca4c163-8841-4d78-9f80-6015eb1f0b3a",
+						"id": "ffc3c047-a390-45d9-b7b3-194f260ee5c5",
 						"exec": [
-							"pm.test(\"Status code is 200 or 404\", function () {",
-							"    // User could exist or not, just want to delete the user to start clean",
-							"    pm.expect(pm.response.code).to.be.oneOf([200, 404])",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "{{tokenId}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/menu?email=pkalkie@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"menu"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "pkalkie@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new shopping cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04b57a99-6e5d-4b16-a95f-66a0c5745b7f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"    var jsonData = pm.response.json();",
+							"    pm.globals.set(\"shoppingCartId\", jsonData.id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenId}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\"     : \"pkalkie@gmail.com\",\n\t\"items\"     : [\n\t\t{\t\n\t\t\t\"code\": \"10SCDELUX\", \n\t\t\t\"amount\": 1\n\t\t}\n\t]\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:3000/shoppingcarts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"shoppingcarts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a shopping cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04b57a99-6e5d-4b16-a95f-66a0c5745b7f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"    var jsonData = pm.response.json();",
+							"    pm.globals.set(\"shoppingCartId\", jsonData.id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenId}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\" : \"{{shoppingCartId}}\",\n\t\"email\"     : \"pkalkie@gmail.com\",\n\t\"items\"     : [\n\t\t{\t\n\t\t\t\"code\": \"10SCDELUX\", \n\t\t\t\"amount\": 3\n\t\t}\n\t]\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:3000/shoppingcarts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"shoppingcarts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a shopping cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04b57a99-6e5d-4b16-a95f-66a0c5745b7f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenId}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/shoppingcarts?id={{shoppingCartId}}&email=pkalkie@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"shoppingcarts"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{shoppingCartId}}"
+						},
+						{
+							"key": "email",
+							"value": "pkalkie@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create an order to checkout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04b57a99-6e5d-4b16-a95f-66a0c5745b7f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "{{tokenId}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\"     : \"pkalkie@gmail.com\",\n\t\"shoppingCartId\" : \"{{shoppingCartId}}\",\n\t\"token\" : \"tok_visa\"\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:3000/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a shopping cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04b57a99-6e5d-4b16-a95f-66a0c5745b7f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -300,7 +537,61 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:3000/users?email=john@doe.nl",
+					"raw": "http://localhost:3000/shoppingcarts?id={{shoppingCartId}}&email=pkalkie@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"shoppingcarts"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{shoppingCartId}}"
+						},
+						{
+							"key": "email",
+							"value": "pkalkie@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete new user john Doe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ca4c163-8841-4d78-9f80-6015eb1f0b3a",
+						"exec": [
+							"pm.test(\"Status code is 200 or 404\", function () {",
+							"    // User could exist or not, just want to delete the user to start clean",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404])",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "{{tokenId}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/users?email=pkalkie@gmail.com",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -312,7 +603,7 @@
 					"query": [
 						{
 							"key": "email",
-							"value": "john@doe.nl"
+							"value": "pkalkie@gmail.com"
 						}
 					]
 				}
